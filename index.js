@@ -7,6 +7,21 @@ function Node(data){
 //Build a Tree class / factory which accepts an array when initialized. The Tree class should have a root attribute which uses the return value of buildTree which you’ll write next.
 function Tree(arr){
     this.root = buildTree(arr)
+    // Write an insert and delete functions which accepts a value to insert/delete (you’ll have to deal with several cases for delete such as when a node has children or not).
+    this.insert = function(val,root){
+        //console.log(root);
+        if(root.data === val){
+            console.log(`This value already exist in the tree.`);
+        }else if(val < root.data && root.left != null){
+            this.insert(val,root.left);
+        }else if(val > root.data && root.right != null){
+            this.insert(val,root.right);
+        }else if(val < root.data && root.left === null){
+            root.left = val;
+        }else if(val > root.data && root.right === null){
+            root.right = val;
+        }
+    }
 }
 //Write a buildTree function which takes an array of data (e.g. [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]) and turns it into a balanced binary tree full of Node objects appropriately placed (don’t forget to sort and remove duplicates!). The buildTree function should return the level-0 root node.
 function buildTree(arr){
@@ -27,8 +42,8 @@ function buildTree(arr){
     arr.sort((a, b) => a - b);
     //console.log(arr.length);
     // now that the array is sorted let's turn the array into a balanced binary tree
-    console.log(arr);
-    console.log(arr.length);
+    //console.log(arr);
+    //console.log(arr.length);
     let lowInterval = 0;//start
     let highInterval = arr.length-1;//end
     return sortedArrayToBST(arr,lowInterval,highInterval);
@@ -56,25 +71,6 @@ function sortedArrayToBST(arr,start,end){
     //console.log(root);
     return root;
 }
-// binary search
-/* function binarySearch(arr,target){
-    let lowInterval = 0;
-    let highInterval = arr.length-1;
-    while(lowInterval<=highInterval){
-        //console.log(lowInterval);
-        //console.log(highInterval);
-        let middle = Math.floor((highInterval+lowInterval)/2);
-        //console.log(middle);
-        if(arr[middle]==target){
-            return middle;
-        }else if(target>arr[middle]){
-            lowInterval = middle + 1;
-        }else{
-            highInterval = middle - 1;
-        }
-    }
-    return null;
-} */
 //If you would like to visualize your binary search tree, here is a prettyPrint()
 //This function will expect to receive the root of your tree as the value for the node parameter.
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -91,12 +87,13 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 }
 
 let data = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-let dataTest = [50,25,75,10,33,56,89,4,11,30,40,52,61,82,95]
+let test = new Tree(data);
+//console.log(test);
+//prettyPrint(test.root);
+//let dataTest = [50,25,75,10,33,56,89,4,11,30,40,52,61,82,95]
 // [1,3,4,5,7,8,9,23,67,324,6345]//length = 11
-console.log(buildTree(dataTest));
-//console.log(`let's try binary search tree`);
-//console.log(binarySearch([3,17,75,80,202],22));
-//console.log(binarySearch([3,17,75,80,202],75));
-prettyPrint(buildTree(dataTest));
-//prettyPrint(buildTree(arr),prefix = '', isLeft = true);
-//console.log(binaryTree(data));
+//console.log(buildTree(data));
+prettyPrint(test.root);
+//console.log(test.root.data);
+//test.insert(0,test.root);
+//prettyPrint(test.root);
