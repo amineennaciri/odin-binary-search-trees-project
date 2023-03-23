@@ -9,18 +9,26 @@ function Tree(arr){
     this.root = buildTree(arr)
     // Write an insert and delete functions which accepts a value to insert/delete (you’ll have to deal with several cases for delete such as when a node has children or not).
     this.insert = function(val,root){
-        //console.log(root);
-        if(root.data === val){
+        if(root.data === val.data){
             console.log(`This value already exist in the tree.`);
-        }else if(val < root.data && root.left != null){
-            this.insert(val,root.left);
-        }else if(val > root.data && root.right != null){
-            this.insert(val,root.right);
-        }else if(val < root.data && root.left === null){
-            root.left = val;
-        }else if(val > root.data && root.right === null){
-            root.right = val;
+            return root;
+        }else if(val.data < root.data){
+            if(root.left === null){
+                root.left = val;
+            }else{
+                this.insert(val,root.left);
+            }
+        }else if(val.data > root.data){
+            if(root.right === null){
+                root.right = val;
+            }else{
+                this.insert(val,root.right);
+            }
         }
+        return root;
+    }
+    this.delete = function(){
+
     }
 }
 //Write a buildTree function which takes an array of data (e.g. [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]) and turns it into a balanced binary tree full of Node objects appropriately placed (don’t forget to sort and remove duplicates!). The buildTree function should return the level-0 root node.
@@ -85,15 +93,16 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
       prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
 }
-
+//let data = [50,25,75,10,33,56,89,4,11,30,40,52,61,82,95]
 let data = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let test = new Tree(data);
 //console.log(test);
 //prettyPrint(test.root);
-//let dataTest = [50,25,75,10,33,56,89,4,11,30,40,52,61,82,95]
 // [1,3,4,5,7,8,9,23,67,324,6345]//length = 11
 //console.log(buildTree(data));
-prettyPrint(test.root);
-//console.log(test.root.data);
-//test.insert(0,test.root);
-//prettyPrint(test.root);
+prettyPrint(test.root); 
+/* console.log(test.root.left.data); */
+const newInput = new Node(0);
+test.insert(newInput,test.root);
+//console.log(test.root);
+prettyPrint(test.root); 

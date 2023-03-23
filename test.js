@@ -230,3 +230,5 @@ let test = new Tree(data);
 console.log(test);
 console.log(test.root.data);
 prettyPrint(test.root);
+test.insert(100,test.root);
+prettyPrint(test.root);
