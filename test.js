@@ -1,236 +1,27 @@
-function Node(data, left = null, right = null) {
-    return {
-      data: data,
-      left: left,
-      right: right,
-    }
-}
-// buildTree returns root node at level 0
-function buildTree(arr, start = 0, end = arr.length - 1) {
-    if (start > end) return null;
-    
-    const mid = parseInt((start + end) / 2);
-    const root = Node(arr[mid]);
-    
-    root.left = buildTree(arr, start, mid - 1);
-    root.right = buildTree(arr, mid + 1, end);
-    
-    return root;
-}
-
-// Array/Object flexibility allows Tree() to work with my React components
-function Tree(arrObj /* Can be array or object */) {  
-    // Remove duplicates and sort array
-    let uniqueArr;
-    if (Array.isArray(arrObj)) {
-      uniqueArr = [...new Set(arrObj.sort((a, b) => a - b))];
-    } 
-  
-    return {
-      root: (Array.isArray(arrObj)) ? buildTree(uniqueArr) : arrObj,
-  
-      insert(value, root = this.root) {
-        if (root === null) {
-          root = Node(value);
-          return root;
-        }
-  
-        if (value < root.data) {
-          root.left = this.insert(value, root.left);
-        } else if (value > root.data) {
-          root.right = this.insert(value, root.right);
-        }
-  
-        return root;
-      },
-  
-      delete(value, root = this.root) {
-        // Base case
-        if (root === null) {
-          return root;
-        }
-  
-        // Traverse down the tree
-        if (value < root.data) {
-          root.left = this.delete(value, root.left);
-        } else if (value > root.data) {
-          root.right = this.delete(value, root.right);
-        } 
-  
-        // Value matches -> delete node and update pointers
-        else {
-          // option 1: root(child) has only one child
-          if (root.left === null) {
-            // return the child's right so new parent can point to it
-            return root.right;
-          } else if (root.right === null) {
-            // return child's left so new parent can point to it
-            return root.left;
-          }
-          // option 2: Node has two children
-          else {
-            // Replace node with next smallest value
-            const minData = function findNextSmallestRightData(root) {
-              let min = root.data;
-              let newRoot = root;
-  
-              // Search for a left node with no left children. 
-              while (newRoot.left !== null) {
-                min = root.left.data;
-                newRoot = root.left;
-              }
-  
-              return min;
-            }
-  
-            root.data = minData(root.right);
-  
-            // Delete the copied node from minData()
-            root.right = this.delete(root.data, root.right)
-          }
-        }
-  
-        return root;
-      },
-  
-      find(value, root = this.root) {
-        // Return root if null or matches value
-        if (root === null || root.data === value) {
-          return root;
-        }
-  
-        // Access root's children if value not found; 
-        if (value < root.data) {
-          return this.find(value, root.left);
-        }
-        return this.find(value, root.right); 
-      },
-  
-      levelOrder(arr = [], queue = [], root = this.root) {
-        if (root === null) return;
-        // Visit the root
-        arr.push(root.data);
-  
-        // Traverse to left and right children -> add to queue
-        queue.push(root.left);
-        queue.push(root.right);
-  
-        // Move to next level
-        while (queue.length) {
-          const level = queue[0];
-          queue.shift();
-          this.levelOrder(arr, queue, level)
-        }
-  
-        return arr;
-      },
-  
-      inorder(arr = [], root = this.root) {
-        if (root === null) return;
-        
-        // Traverse left subtree
-        if (root.left) this.inorder(arr, root.left);
-        
-        // Visit the root
-        arr.push(root.data);
-        
-        // Traverse right subtree
-        if (root.right) this.inorder(arr, root.right);
-       
-        return arr;
-      },
-  
-      preorder(arr = [], root = this.root) {
-        if (root === null) return;
-        
-        // Visit the root
-        arr.push(root.data);
-        
-        // Traverse the left subtree
-        if (root.left) this.preorder(arr, root.left);
-        
-        // Traverse the right subTree
-        if (root.right) this.preorder(arr, root.right);
-        
-        return arr;
-      },
-  
-      postorder(arr = [], root = this.root) {
-        if (root === null) return;
-  
-        // Traverse left subtree
-        if (root.left) this.postorder(arr, root.left);
-        
-        // Traverse right subtree
-        if (root.right) this.postorder(arr, root.right);
-        
-        // Visit the root
-        arr.push(root.data);
-  
-        return arr;
-      },
-  
-      height(root = this.root) {
-        if (root === null) return 0;
-  
-        let lHeight = this.height(root.left);
-        let rHeight = this.height(root.right);
-  
-        if (lHeight > rHeight) {
-          return lHeight + 1;
-        } else {
-          return rHeight + 1;
-        }
-      },
-  
-      depth(node, root = this.root, depth = 0) {
-        if (root === null || node === null) return;
-        // if (node === root) return depth;
-        if (node === root) return `Depth: ${depth}`
-        if (node.data < root.data) {
-          return this.depth(node, root.left, depth += 1);
-        } else {
-          return this.depth(node, root.right, depth += 1);
-        }
-      },
-  
-      isBalanced(root = this.root) {
-        const lHeight = this.height(root.left);
-        const rHeight = this.height(root.right);
-        const diff = Math.abs(lHeight - rHeight);
-        return diff < 2 ? 'true' : 'false';
-      },
-  
-      rebalance(root = this.root) {
-        let arr = this.levelOrder([], [], root);
-        arr.sort((a, b) => a - b);
-        return this.root = buildTree(arr);
-      },
-    }
+import { Node } from './newNode.js';
+import { Tree } from './index.js';
+import { prettyPrint } from './prettyPrint.js';
+function testing(Tree,Node){
+    //let data = [50,25,75,10,33,56,89,4,11,30,40,52,61,82,95]
+    let data = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+    let test = new Tree(data);
+    //console.log(test);
+    //prettyPrint(test.root);
+    // [1,3,4,5,7,8,9,23,67,324,6345]//length = 11
+    console.log(`Pretty Print console log`);
+    prettyPrint(test.root); 
+    /* console.log(test.root.left.data); */
+    const firstInput = new Node(0);
+    test.insert(firstInput,test.root);
+    console.log(`Pretty Print console log`);
+    prettyPrint(test.root);
+    const secondInput = new Node(0);
+    test.delete(secondInput,test.root);
+    console.log(`Pretty Print console log`);
+    prettyPrint(test.root);
+    const thirdInput = new Node(4);
+    //console.log(test.find(thirdInput,test.root));
+    console.log(test.find(324));
 }
 
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-    if (node === null) {
-       return;
-    }
-    if (node.right !== null) {
-      prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-    }
-    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-    if (node.left !== null) {
-      prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-    }
-}
-
-
-
-let data = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-//prettyPrint(buildTree(data));
-let test = new Tree(data);
-console.log(test);
-console.log(test.root.data);
-prettyPrint(test.root);
-test.insert(100,test.root);
-prettyPrint(test.root);
-test.delete(3,test.root);
-prettyPrint(test.root);
+export { testing };

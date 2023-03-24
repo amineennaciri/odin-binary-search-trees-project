@@ -1,0 +1,23 @@
+{
+  "name": "odin-binary-search-trees-project",
+  "version": "1.0.0",
+  "description": "This is the binary search trees project from TOP(the odin project) Full Stack JavaScript course.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amineennaciri/odin-binary-search-trees-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amineennaciri/odin-binary-search-trees-project/issues"
+  },
+  "homepage": "https://github.com/amineennaciri/odin-binary-search-trees-project#readme",
+  "devDependencies": {
+    "webpack": "^5.76.3",
+    "webpack-cli": "^5.0.1"
+  }
+}
