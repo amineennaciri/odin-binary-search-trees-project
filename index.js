@@ -27,7 +27,63 @@ function Tree(arr){
         }
         return root;
     }
-    this.delete = function(){
+    this.delete = function(val,root){
+        // search the val in the node.
+        if(val.data === root.data){
+            //start the process for the deletion.
+            // no children
+            if(root.left === null && root.right === null){
+                root.data = null;
+                //delete root.data;
+            // 1 children
+            }else if(root.left != null && root.right === null){
+                root.data = root.left.data;
+                delete root.left;
+                //root.left = null;
+            }else if(root.left === null && root.right != null){
+                root.data = root.right.data;
+                root.right = null;
+                //delete root.right;
+            // 2 children
+            }else if(root.left != null && root.right != null){
+                root.data = root.right.data;
+                root.right = null;
+                //delete root.right;
+            // successor node
+            }/* else if(root.right.left != null){
+                let pointer = root.right;
+                while(pointer.left != null){
+                    pointer = pointer.left;
+                }
+                root.data = pointer.data;
+                pointer = null;    
+            // successor node
+            } */else if(root.right.left != null){
+                let pointer = root.right;
+                let pointerRightChild = null;
+                while(pointer.left != null){
+                    pointer = pointer.left;
+                    // successor node in case of a right child
+                    if(pointer.left ===null && pointer.right != null){
+                        // save the right child
+                        pointerRightChild = pointer.right;
+                    }
+
+                }
+                root.data = pointer.data;
+                if(pointerRightChild != null){
+                    pointer = pointerRightChild;
+                }else{
+                    pointer = null;
+                }    
+            }
+        }else if(val.data > root.data){
+            this.delete(val,root.right);
+        }else if(val.data < root.data){
+            this.delete(val,root.left);
+        }else{
+            return `impossible to delete ${val.data} because it is not in the tree.`
+        }
 
     }
 }
@@ -99,10 +155,15 @@ let test = new Tree(data);
 //console.log(test);
 //prettyPrint(test.root);
 // [1,3,4,5,7,8,9,23,67,324,6345]//length = 11
-//console.log(buildTree(data));
+console.log(`Pretty Print console log`);
 prettyPrint(test.root); 
 /* console.log(test.root.left.data); */
-const newInput = new Node(0);
-test.insert(newInput,test.root);
+const firstInput = new Node(0);
+test.insert(firstInput,test.root);
 //console.log(test.root);
-prettyPrint(test.root); 
+console.log(`Pretty Print console log`);
+prettyPrint(test.root);
+const secondInput = new Node(0);
+test.delete(secondInput,test.root);
+console.log(`Pretty Print console log`);
+prettyPrint(test.root);

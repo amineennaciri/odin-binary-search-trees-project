@@ -232,3 +232,5 @@ console.log(test.root.data);
 prettyPrint(test.root);
 test.insert(100,test.root);
 prettyPrint(test.root);
+test.delete(3,test.root);
+prettyPrint(test.root);
