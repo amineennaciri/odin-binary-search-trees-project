@@ -1,5 +1,6 @@
-import { Node } from './newNode.js';
-//Build a Node class / factory. It should have an attribute for the data it stores as well as its left and right children.
+import { Node } from '../newNode.js';
+import { buildTree } from '../buildTree.js';
+import { testing } from '../test.js';
 //Build a Tree class / factory which accepts an array when initialized. The Tree class should have a root attribute which uses the return value of buildTree which you’ll write next.
 function Tree(arr){
     this.root = buildTree(arr)
@@ -92,7 +93,7 @@ function Tree(arr){
         }else{
             return `impossible to find node ${val} because it is not in the tree.`
         } */
-        this.find = function(value, root = this.root) {
+    this.find = function(value, root = this.root) {
             // Return root if null or matches value
             if (root === null || root.data === value) {
               return root;
@@ -104,10 +105,80 @@ function Tree(arr){
             }
             return this.find(value, root.right); 
     }
+    this.levelOrder = function(arr = [], queue = [], root = this.root) {
+        if (root === null) return;
+        // Visit the root
+        arr.push(root.data);
+  
+        // Traverse to left and right children -> add to queue
+        queue.push(root.left);
+        queue.push(root.right);
+  
+        // Move to next level
+        while (queue.length) {
+          const level = queue[0];
+          queue.shift();
+          this.levelOrder(arr, queue, level)
+        }
+  
+        return arr;
+    }
+    this.inorder = function(arr = [], root = this.root) {
+        if (root === null) return;
+        
+        // Traverse left subtree
+        if (root.left) this.inorder(arr, root.left);
+        
+        // Visit the root
+        arr.push(root.data);
+        
+        // Traverse right subtree
+        if (root.right) this.inorder(arr, root.right);
+       
+        return arr;
+      }  
+      this.preorder = function(arr = [], root = this.root) {
+        if (root === null) return;
+        
+        // Visit the root
+        arr.push(root.data);
+        
+        // Traverse the left subtree
+        if (root.left) this.preorder(arr, root.left);
+        
+        // Traverse the right subTree
+        if (root.right) this.preorder(arr, root.right);
+        
+        return arr;
+      }
+      this.postorder = function(arr = [], root = this.root) {
+        if (root === null) return;
+  
+        // Traverse left subtree
+        if (root.left) this.postorder(arr, root.left);
+        
+        // Traverse right subtree
+        if (root.right) this.postorder(arr, root.right);
+        
+        // Visit the root
+        arr.push(root.data);
+  
+        return arr;
+    }
+    //Write a height function which accepts a node and returns its height. Height is defined as the number of edges in longest path from a given node to a leaf node.
+    this.height = function(root = this.root){
+        if (root === null) return 0;
+  
+        let lHeight = this.height(root.left);
+        let rHeight = this.height(root.right);
+  
+        if (lHeight > rHeight) {
+          return lHeight + 1;
+        } else {
+          return rHeight + 1;
+        }
+    }
 }
-import { buildTree } from './buildTree.js';
-
-import { prettyPrint } from './prettyPrint.js';
-
-import { testing } from './test.js';
-testing(Tree,Node); 
+//---------------Testing----------------
+testing(Tree,Node);
+// to see what's going on look at the test.js file

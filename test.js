@@ -1,5 +1,5 @@
 import { Node } from './newNode.js';
-import { Tree } from './index.js';
+import { Tree } from './src/index.js';
 import { prettyPrint } from './prettyPrint.js';
 function testing(Tree,Node){
     //let data = [50,25,75,10,33,56,89,4,11,30,40,52,61,82,95]
@@ -21,7 +21,18 @@ function testing(Tree,Node){
     prettyPrint(test.root);
     const thirdInput = new Node(4);
     //console.log(test.find(thirdInput,test.root));
-    console.log(test.find(324));
+    console.log(test.find(3));
+    console.log(`Breath First`);
+    console.log(test.levelOrder());
+    console.log(`Depth first`);
+    console.log(`Inorder`);
+    console.log(test.inorder());
+    console.log(`preorder`);
+    console.log(test.preorder());
+    console.log(`postorder`);
+    console.log(test.postorder());
+    console.log(`Height Tree`);
+    console.log(test.height());
 }
 
 export { testing };
